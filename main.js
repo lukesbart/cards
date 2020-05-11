@@ -1,5 +1,6 @@
 import {createDeck} from './content.js';
 let deck;
+let deck_size;
 
 let button     = document.getElementById('start')
 let zeroCard   = document.getElementById('zero_card')
