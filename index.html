@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <title>Cards</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="../node_modules/materialize-css/dist/css/materialize.css">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <br>
+      <h1 class="header center orange-text">Cards Workout</h1>
+      <div class="row center">
+        <h5 class="header col s12 light">This program is based off of Jeff Nippard's Card Workout</h5>
+      </div>
+      <div class="row center">
+        <div class="row">
+          <div class="col m2"></div>
+          <div class="input-field col s12 m6">
+            <input value="20" id="deck_size" type="text" class="validate" pattern="[0-9]*">
+            <label class="active" for="deck_size">How many cards would you like?</label>
+            <p class="red-text text-darken-2 hide">Too many cards!</p>
+          </div>
+          <div class="input-field col s12 m2">
+            <a href="#/" class="btn-large waves-effect waves-light orange" id="start">Start</a>
+          </div>
+        </div>
+      </div>
+      <br>
+
+    </div>
+  </div>
+  <div class="container" id="cards">
+    <div class="section" id="zero_card">
+      <div class="row">
+        <div class="col s1 m3 push-s7 hide-on-small-only"></div>
+        <div class="col s12 m5">
+          <div class="card">
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1535369399506-d2f4346f74be?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=422&q=80">
+              <span class="card-title">Cards Workout</span>
+            </div>
+            <div class="card-content">
+              <p>Enter an amount of cards to start.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section hide" id="start_card">
+      <div class="row">
+        <div class="col s1 m3 push-s7 hide-on-small-only"></div>
+        <div class="col s12 m5">
+          <div class="card">
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1529480544878-4e2cc822c103?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=80">
+              <span class="card-title" id="start_text"></span>
+            </div>
+            <div class="card-content">
+              <p>It's gains o'clock. Let's go!</p>
+            </div>
+            <div class="card-action">
+              <a href="#cards/" class="right">Next</a>
+              <br>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section hide">
+      <div class="row">
+        <div class="col s1 m3 push-s7 hide-on-small-only"></div>
+        <div class="col s12 m5">
+          <div class="card">
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1529480384838-c1681c84aca5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60">
+              <span class="card-title">Workout Finished</span>
+            </div>
+            <div class="card-content">
+              <p>Good job!</p>
+            </div>
+            <div class="card-action">
+              <a href="#cards/">Previous</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="page-footer footer-copyright orange">
+      <div class="container">
+        <div class="section">
+          <div class="valign-wrapper">
+            <span>&copy; Luke Bartholomew. Card Workout material from Jeff Nippard. Hopefully used with permission</span>
+          </div>
+        </div>
+      </div>
+  </footer>
+  <script type="module" src="main.js"></script>
+  <script type="text/javascript" src="cache.js"></script>
+  <script>
+    if('serviceWorker' in navigator) {
+
+        /**
+         * Define if <link rel='next|prev|prefetch'> should
+         * be preloaded when accessing this page
+         */
+        const PREFETCH = true;
+
+        /**
+         * Define which link-rel's should be preloaded if enabled.
+         */
+        const PREFETCH_LINK_RELS = ['index','next', 'prev', 'prefetch'];
+
+        /**
+         * prefetchCache
+         */
+        function prefetchCache() {
+            if(navigator.serviceWorker.controller) {
+
+                let links = document.querySelectorAll(
+                    PREFETCH_LINK_RELS.map((rel) => {
+                        return 'link[rel='+rel+']';
+                    }).join(',')
+                );
+
+                if(links.length > 0) {
+                    Array.from(links)
+                        .map((link) => {
+                            let href = link.getAttribute('href');
+                            navigator.serviceWorker.controller.postMessage({
+                                action : 'cache',
+                                url : href,
+                            });
+                        });
+                }
+
+
+            }
+        }
+
+        /**
+         * Register Service Worker
+         */
+        navigator.serviceWorker
+            .register('/sw.js', { scope: '/' })
+            .then(() => {
+                console.log('Service Worker Registered');
+            });
+
+        /**
+         * Wait if ServiceWorker is ready
+         */
+        navigator.serviceWorker
+            .ready
+            .then(() => {
+                if(PREFETCH) {
+                    prefetchCache();
+                }
+            });
+
+    }
+  </script>
+</body>
+</html>
